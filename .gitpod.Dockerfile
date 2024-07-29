@@ -1,26 +1,8 @@
-# Use an official Gitpod base image
-FROM gitpod/workspace-full:latest
+FROM gitpod/workspace-full
 
-# Update package lists
-RUN sudo apt-get update
+# Install kvm
+RUN apt-get update && apt-get install -y qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
 
-# Upgrade the system packages
-RUN sudo apt-get upgrade -y
-
-# Install qemu-kvm
-RUN sudo apt-get install -y qemu-kvm
-
-# Install libvirt-bin
-RUN sudo apt-get install -y libvirt-bin
-
-# Install bridge-utils
-RUN sudo apt-get install -y bridge-utils
-
-# Install virt-manager
-RUN sudo apt-get install -y virt-manager
-
-# Clean up the package lists
-RUN sudo apt-get clean
-
-# Ensure the user has permissions to use KVM
-RUN sudo adduser gitpod kvm
+# Configure kvm
+RUN adduser $(whoami) libvirt
+RUN adduser $(whoami) kvm
